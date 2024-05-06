@@ -1,0 +1,7 @@
+../Core/Src/PE43xx.cpp:5:1:PE43xx::PE43xx(GPIO_TypeDef*, GPIO_InitTypeDef, GPIO_TypeDef*, GPIO_InitTypeDef, GPIO_TypeDef*, GPIO_InitTypeDef, uint8_t, uint8_t)	1
+../Core/Src/PE43xx.cpp:18:6:void PE43xx::begin()	5
+../Core/Src/PE43xx.cpp:43:6:bool PE43xx::setLevel(float)	4
+../Core/Src/PE43xx.cpp:55:6:void PE43xx::_writeLevel()	3
+../Core/Src/PE43xx.cpp:120:7:float PE43xx::getLevel()	1
+../Core/Src/PE43xx.cpp:124:7:float PE43xx::getMax()	1
+../Core/Src/PE43xx.cpp:128:7:float PE43xx::getStep()	1

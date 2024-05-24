@@ -4,11 +4,11 @@
 ../Core/Src/PhaseShifter.cpp:47:6:void PhaseShifter::dataShiftOut(uint8_t, data_u)	24	static
 ../Core/Src/PhaseShifter.cpp:93:10:uint16_t PhaseShifter::findAngle(float, mode_e, float*)	40	static
 ../Core/Src/PhaseShifter.cpp:141:7:float PhaseShifter::setAngle(float)	24	static
-../Core/Src/PhaseShifter.cpp:156:6:void PhaseShifter::setData(data_u)	16	static
-../Core/Src/PhaseShifter.cpp:161:8:data_u PhaseShifter::getData()	16	static
-../Core/Src/PhaseShifter.cpp:166:6:void PhaseShifter::setAddress(uint8_t)	16	static
-../Core/Src/PhaseShifter.cpp:171:9:uint8_t PhaseShifter::getAddress()	16	static
-../Core/Src/PhaseShifter.cpp:176:6:void PhaseShifter::setMode(mode_e)	16	static
-../Core/Src/PhaseShifter.cpp:186:8:mode_e PhaseShifter::getMode()	16	static
-../Core/Src/PhaseShifter.cpp:191:6:void PhaseShifter::setPins(GPIO_InitTypeDef, GPIO_InitTypeDef, GPIO_InitTypeDef)	24	static
-../Core/Src/PhaseShifter.cpp:198:6:void PhaseShifter::getPins(GPIO_InitTypeDef*, GPIO_InitTypeDef*, GPIO_InitTypeDef*)	32	static
+../Core/Src/PhaseShifter.cpp:158:6:void PhaseShifter::setData(data_u)	16	static
+../Core/Src/PhaseShifter.cpp:163:8:data_u PhaseShifter::getData()	16	static
+../Core/Src/PhaseShifter.cpp:168:6:void PhaseShifter::setAddress(uint8_t)	16	static
+../Core/Src/PhaseShifter.cpp:173:9:uint8_t PhaseShifter::getAddress()	16	static
+../Core/Src/PhaseShifter.cpp:178:6:void PhaseShifter::setMode(mode_e)	16	static
+../Core/Src/PhaseShifter.cpp:188:8:mode_e PhaseShifter::getMode()	16	static
+../Core/Src/PhaseShifter.cpp:193:6:void PhaseShifter::setPins(GPIO_InitTypeDef, GPIO_InitTypeDef, GPIO_InitTypeDef)	24	static
+../Core/Src/PhaseShifter.cpp:200:6:void PhaseShifter::getPins(GPIO_InitTypeDef*, GPIO_InitTypeDef*, GPIO_InitTypeDef*)	32	static

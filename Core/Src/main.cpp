@@ -19,15 +19,15 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "lwip.h"
-#include "string.h"
-#include "PhaseShifter.h"
-#include "stdio.h"
-#include "PE43xx.h"
-#include "lwip/init.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "tcpServerRAW.h"
+#include "math.h"
+#include "string.h"
+#include "lwip/apps/httpd.h"
+#include "PhaseShifter.h"
+#include "PE43xx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -37,33 +37,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-/* Define IP address */
-#define IP_ADDR0    192
-#define IP_ADDR1    168
-#define IP_ADDR2    1
-#define IP_ADDR3    100
-
-/* Define netmask */
-#define NETMASK_ADDR0   255
-#define NETMASK_ADDR1   255
-#define NETMASK_ADDR2   255
-#define NETMASK_ADDR3   0
-
-/* Define gateway address */
-#define GW_ADDR0    192
-#define GW_ADDR1    168
-#define GW_ADDR2    1
-#define GW_ADDR3    1
-
-/* Define the port */
-#define TCP_PORT    80
-
-#define TCP_EVENT_CONNECTED 0
-#define TCP_EVENT_RECV 1
-#define TCP_EVENT_SENT 2
-#define TCP_EVENT_POLL 3
-#define TCP_EVENT_ERR 4
-#define TCP_EVENT_FIN 5
+#define PI 3.141592653589793
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -81,25 +55,9 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-/* HTML content */
-const char* html_content =
-"HTTP/1.1 200 OK\r\n"
-"Content-Type: text/html\r\n\r\n"
-"<!DOCTYPE html>\r\n"
-"<html>\r\n"
-"<head><title>STM32 Mini Web Server</title></head>\r\n"
-"<body>\r\n"
-"<h1>Hello from STM32!</h1>\r\n"
-"</body>\r\n"
-"</html>\r\n";
-
-/* Private variables */
-uint8_t MACAddr[6] = {MAC_ADDR0, MAC_ADDR1, MAC_ADDR2, MAC_ADDR3, MAC_ADDR4, MAC_ADDR5};
-uint8_t IPAddr[4] = {IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3};
-uint8_t NetMask[4] = {NETMASK_ADDR0, NETMASK_ADDR1, NETMASK_ADDR2, NETMASK_ADDR3};
-uint8_t GWAddr[4] = {GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3};
-
-struct netif gnetif;
+extern struct netif gnetif;
+char input[100];
+double angle_of_attack;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,12 +68,17 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
 /* USER CODE BEGIN PFP */
-static void Netif_Config(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+// Fonction pour calculer le déphasage de chaque antenne
+void calculate_phase_shifts(double angle_of_attack, double wavelength, double distance, int num_antennas, double phase_shifts[]) {
+    for (int n = 0; n < num_antennas; n++) {
+        phase_shifts[n] = (2 * PI * distance / wavelength) * n * sin(angle_of_attack) * 57.3;
+    }
+}
 /* USER CODE END 0 */
 
 /**
@@ -186,6 +149,11 @@ int main(void)
   //MX_LWIP_Init();
   /* USER CODE BEGIN 2 */
 
+  tcp_server_init();
+
+  char *cmd, *arg, *option;
+  char serial_output[100] = "";
+
   char data[] = "Angle=60.000000\n\r";
   float angle = 0;
   int anglevalue = 0;
@@ -199,7 +167,6 @@ int main(void)
   pe4312.begin();
   HAL_GPIO_WritePin(GPIOC, LE_Att_Pin, GPIO_PIN_RESET);
 
-  Netif_Config();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -207,18 +174,40 @@ int main(void)
   while (1)
   {
 	  MX_LWIP_Process();
+	  if(input[0] != '\0'){
 
-	  angle = pe44820.setAngle(anglevalue);
-	  pe4312.setLevel(30);
-	  sprintf(data,"%f\n\r",angle);
-	  HAL_UART_Transmit(&huart3, (uint8_t*)data, sizeof(data), 10);
+	  		  cmd = strtok(input, " ");
+	  		  arg = strtok(NULL, " ");
+	  		  option = strtok(NULL, " ");
 
-	  anglevalue++;
-	  if(anglevalue >= 360){
-		  anglevalue = 0;
-	  }
+	  		  if(!strcmp(cmd, "BEAM")){
+	  			  strncpy(serial_output, "Command Received\n\r", 21);
+	  			  int value = strtol(arg, NULL, 10);
+	  			  if(value){
 
-	  HAL_Delay(1000);
+	  				    // Convertir l'angle d'attaque en radians
+	  				    angle_of_attack = value * PI / 180.0;
+
+	  				    // Tableau pour stocker les déphasages
+	  				    double phase_shifts[8];
+
+	  				    // Calculer les déphasages
+	  				    calculate_phase_shifts(angle_of_attack, 0.03, 0.05, 8, phase_shifts);
+	  				    pe44820.setAngle(phase_shifts[1]);
+	  				    pe4312.setLevel(30);
+	  			  }
+
+	  		  }
+	  		  else if(!strcmp(cmd, "PHASE")){
+
+	  		  }
+	  		  else{
+	  			  strncpy(serial_output, "Unknown Command\n\r", 20);
+	  		  }
+
+	  		  HAL_UART_Transmit(&huart3, (const uint8_t*)serial_output, sizeof(serial_output), 10);
+	  		  memset (input, '\0', 100);
+	  	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -513,28 +502,7 @@ GPIO_InitTypeDef GPIO_InitStruct = {0};
 }
 
 /* USER CODE BEGIN 4 */
-static void Netif_Config(void) {
-    ip_addr_t ipaddr;
-    ip_addr_t netmask;
-    ip_addr_t gw;
 
-    /* Initialize the LwIP stack */
-    lwip_init();
-
-    /* IP address setting */
-    IP4_ADDR(&ipaddr, IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
-    IP4_ADDR(&netmask, NETMASK_ADDR0, NETMASK_ADDR1, NETMASK_ADDR2, NETMASK_ADDR3);
-    IP4_ADDR(&gw, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
-
-    /* Add the network interface */
-    netif_add(&gnetif, &ipaddr, &netmask, &gw, MACAddr, &ethernetif_init, &ethernet_input);
-
-    /* Set the network interface as default */
-    netif_set_default(&gnetif);
-
-    /* Bring up the network interface */
-    netif_set_up(&gnetif);
-}
 /* USER CODE END 4 */
 
 /**

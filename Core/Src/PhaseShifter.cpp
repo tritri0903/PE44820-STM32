@@ -144,8 +144,10 @@ float PhaseShifter::setAngle(float angle)
 
   if (angle < 0)
     angle = 0;
-  if (angle > 360)
-    angle = 360;
+  for (;angle > 360;){
+	 angle -= 360;
+  }
+
 
   this->_data.raw = findAngle(angle, this->_mode, &foundAngle);
   this->dataShiftOut(this->_address, this->_data);

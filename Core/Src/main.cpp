@@ -18,11 +18,12 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "lwip.h"
 #include "string.h"
 #include "PhaseShifter.h"
 #include "stdio.h"
 #include "PE43xx.h"
-
+#include "lwip/init.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -36,7 +37,33 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+/* Define IP address */
+#define IP_ADDR0    192
+#define IP_ADDR1    168
+#define IP_ADDR2    1
+#define IP_ADDR3    100
 
+/* Define netmask */
+#define NETMASK_ADDR0   255
+#define NETMASK_ADDR1   255
+#define NETMASK_ADDR2   255
+#define NETMASK_ADDR3   0
+
+/* Define gateway address */
+#define GW_ADDR0    192
+#define GW_ADDR1    168
+#define GW_ADDR2    1
+#define GW_ADDR3    1
+
+/* Define the port */
+#define TCP_PORT    80
+
+#define TCP_EVENT_CONNECTED 0
+#define TCP_EVENT_RECV 1
+#define TCP_EVENT_SENT 2
+#define TCP_EVENT_POLL 3
+#define TCP_EVENT_ERR 4
+#define TCP_EVENT_FIN 5
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -46,12 +73,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 
-ETH_TxPacketConfig TxConfig;
-ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
-
-ETH_HandleTypeDef heth;
-
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
 
@@ -60,19 +81,36 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
+/* HTML content */
+const char* html_content =
+"HTTP/1.1 200 OK\r\n"
+"Content-Type: text/html\r\n\r\n"
+"<!DOCTYPE html>\r\n"
+"<html>\r\n"
+"<head><title>STM32 Mini Web Server</title></head>\r\n"
+"<body>\r\n"
+"<h1>Hello from STM32!</h1>\r\n"
+"</body>\r\n"
+"</html>\r\n";
 
+/* Private variables */
+uint8_t MACAddr[6] = {MAC_ADDR0, MAC_ADDR1, MAC_ADDR2, MAC_ADDR3, MAC_ADDR4, MAC_ADDR5};
+uint8_t IPAddr[4] = {IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3};
+uint8_t NetMask[4] = {NETMASK_ADDR0, NETMASK_ADDR1, NETMASK_ADDR2, NETMASK_ADDR3};
+uint8_t GWAddr[4] = {GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3};
+
+struct netif gnetif;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_ETH_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
 /* USER CODE BEGIN PFP */
-
+static void Netif_Config(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -139,11 +177,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_ETH_Init();
+  //MX_ETH_Init();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   MX_SPI1_Init();
   MX_SPI2_Init();
+  MX_LWIP_Init();
+  //MX_LWIP_Init();
   /* USER CODE BEGIN 2 */
 
   char data[] = "Angle=60.000000\n\r";
@@ -159,13 +199,15 @@ int main(void)
   pe4312.begin();
   HAL_GPIO_WritePin(GPIOC, LE_Att_Pin, GPIO_PIN_RESET);
 
-
+  Netif_Config();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  MX_LWIP_Process();
+
 	  angle = pe44820.setAngle(anglevalue);
 	  pe4312.setLevel(30);
 	  sprintf(data,"%f\n\r",angle);
@@ -227,55 +269,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-}
-
-/**
-  * @brief ETH Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_ETH_Init(void)
-{
-
-  /* USER CODE BEGIN ETH_Init 0 */
-
-  /* USER CODE END ETH_Init 0 */
-
-   static uint8_t MACAddr[6];
-
-  /* USER CODE BEGIN ETH_Init 1 */
-
-  /* USER CODE END ETH_Init 1 */
-  heth.Instance = ETH;
-  MACAddr[0] = 0x00;
-  MACAddr[1] = 0x80;
-  MACAddr[2] = 0xE1;
-  MACAddr[3] = 0x00;
-  MACAddr[4] = 0x00;
-  MACAddr[5] = 0x00;
-  heth.Init.MACAddr = &MACAddr[0];
-  heth.Init.MediaInterface = HAL_ETH_RMII_MODE;
-  heth.Init.TxDesc = DMATxDscrTab;
-  heth.Init.RxDesc = DMARxDscrTab;
-  heth.Init.RxBuffLen = 1524;
-
-  /* USER CODE BEGIN MACADDRESS */
-
-  /* USER CODE END MACADDRESS */
-
-  if (HAL_ETH_Init(&heth) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  memset(&TxConfig, 0 , sizeof(ETH_TxPacketConfig));
-  TxConfig.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
-  TxConfig.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
-  TxConfig.CRCPadCtrl = ETH_CRC_PAD_INSERT;
-  /* USER CODE BEGIN ETH_Init 2 */
-
-  /* USER CODE END ETH_Init 2 */
-
 }
 
 /**
@@ -520,7 +513,28 @@ GPIO_InitTypeDef GPIO_InitStruct = {0};
 }
 
 /* USER CODE BEGIN 4 */
+static void Netif_Config(void) {
+    ip_addr_t ipaddr;
+    ip_addr_t netmask;
+    ip_addr_t gw;
 
+    /* Initialize the LwIP stack */
+    lwip_init();
+
+    /* IP address setting */
+    IP4_ADDR(&ipaddr, IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
+    IP4_ADDR(&netmask, NETMASK_ADDR0, NETMASK_ADDR1, NETMASK_ADDR2, NETMASK_ADDR3);
+    IP4_ADDR(&gw, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
+
+    /* Add the network interface */
+    netif_add(&gnetif, &ipaddr, &netmask, &gw, MACAddr, &ethernetif_init, &ethernet_input);
+
+    /* Set the network interface as default */
+    netif_set_default(&gnetif);
+
+    /* Bring up the network interface */
+    netif_set_up(&gnetif);
+}
 /* USER CODE END 4 */
 
 /**

@@ -22,12 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "tcpServerRAW.h"
-#include "math.h"
-#include "string.h"
-#include "lwip/apps/httpd.h"
-#include "PhaseShifter.h"
-#include "PE43xx.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -37,25 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define PI 3.141592653589793
 
-#define LE_ATT_PIN_A 8
-#define LE_ATT_PIN_B 8
-#define LE_ATT_PIN_C 9
-#define LE_ATT_PIN_D 12
-#define LE_ATT_PIN_E 8
-#define LE_ATT_PIN_F 14
-#define LE_ATT_PIN_G 11
-#define LE_ATT_PIN_H 1
-
-#define LE_ATT_PORT_A GPIOC
-#define LE_ATT_PORT_B GPIOB
-#define LE_ATT_PORT_C GPIOB
-#define LE_ATT_PORT_D GPIOF
-#define LE_ATT_PORT_E GPIOE
-#define LE_ATT_PORT_F GPIOE
-#define LE_ATT_PORT_G GPIOB
-#define LE_ATT_PORT_H GPIOG
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -64,7 +41,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
 
@@ -73,13 +49,7 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-extern struct netif gnetif;
-char input[100];
-char output[100];
-double angle_of_attack;
-float antenna_distance;
 
-struct tcp_pcb *server_pcb;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -95,12 +65,7 @@ static void MX_SPI2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-// Fonction pour calculer le déphasage de chaque antenne
-void calculate_phase_shifts(double angle_of_attack, double wavelength, double distance, int num_antennas, double phase_shifts[]) {
-    for (int n = 0; n < num_antennas; n++) {
-        phase_shifts[n] = (2 * PI * distance / wavelength) * n * sin(angle_of_attack) * 57.3;
-    }
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -120,73 +85,6 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
-  GPIO_InitTypeDef GPIO_InitStruct_Si = {
-		  .Pin = SI_Pin,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Le = {
-		  .Pin = LE_Pin,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Clk = {
-		  .Pin = CLK_Pin,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Si_Att = {
-		  .Pin = SDI_Att_Pin,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Clk_Att = {
-		  .Pin = CLK_Att_Pin,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Le_Att_A = {
-		  .Pin = LE_ATT_PIN_A,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Le_Att_B = {
-		  .Pin = LE_ATT_PIN_B,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Le_Att_C = {
-		  .Pin = LE_ATT_PIN_C,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Le_Att_D = {
-		  .Pin = LE_ATT_PIN_D,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Le_Att_E = {
-		  .Pin = LE_ATT_PIN_E,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Le_Att_F = {
-		  .Pin = LE_ATT_PIN_F,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Le_Att_G = {
-		  .Pin = LE_ATT_PIN_G,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Le_Att_H = {
-		  .Pin = LE_ATT_PIN_H,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -198,46 +96,12 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  //MX_ETH_Init();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   MX_SPI1_Init();
   MX_SPI2_Init();
   MX_LWIP_Init();
-  //MX_LWIP_Init();
   /* USER CODE BEGIN 2 */
-
-  server_pcb = tcp_server_init();
-
-  char *cmd, *arg, *option;
-  char serial_output[100] = "";
-
-  antenna_distance = 0.05;
-
-  PhaseShifter pe44820_A = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_B = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x001, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_C = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x002, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_D = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x003, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_E = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x004, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_F = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x005, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_G = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x006, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_H = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x007, MODE_BINARY_WEIGHTED);
-
-
-  PE43xx pe4312_A = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_A, GPIO_InitStruct_Le_Att_A, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_B = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_B, GPIO_InitStruct_Le_Att_B, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_C = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_C, GPIO_InitStruct_Le_Att_C, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_D = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_D, GPIO_InitStruct_Le_Att_D, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_E = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_E, GPIO_InitStruct_Le_Att_E, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_F = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_F, GPIO_InitStruct_Le_Att_F, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_G = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_G, GPIO_InitStruct_Le_Att_G, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_H = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_H, GPIO_InitStruct_Le_Att_H, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-
-  HAL_GPIO_WritePin(GPIOC, LE_Att_Pin, GPIO_PIN_RESET);
-
-
-  //struct tcp_server_struct *esTx;
-
 
   /* USER CODE END 2 */
 
@@ -245,61 +109,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  MX_LWIP_Process();
-	  if(input[0] != '\0'){
-
-	  		  cmd = strtok(input, " ");
-	  		  arg = strtok(NULL, " ");
-	  		  option = strtok(NULL, " ");
-
-	  		  if(!strcmp(cmd, "BEAM")){
-	  			  const char *test_message = "Hello, this is a test message!";
-	  			  tcp_server_send_message(server_pcb, test_message);
-	  			  strncpy(serial_output, "Command Received\n\r", 21);
-	  			  int value = strtol(arg, NULL, 10);
-	  			  if(value){
-					// Convertir l'angle d'attaque en radians
-					angle_of_attack = value * PI / 180.0;
-
-					// Tableau pour stocker les déphasages
-					double phase_shifts[8];
-
-					// Calculer les déphasages
-					calculate_phase_shifts(angle_of_attack, 0.03, antenna_distance, 8, phase_shifts);
-					pe44820_A.setAngle(phase_shifts[0]);
-					pe44820_B.setAngle(phase_shifts[1]);
-	  				pe44820_C.setAngle(phase_shifts[2]);
-	  				pe44820_D.setAngle(phase_shifts[3]);
-	  				pe44820_E.setAngle(phase_shifts[4]);
-	  				pe44820_F.setAngle(phase_shifts[5]);
-	  				pe44820_G.setAngle(phase_shifts[6]);
-	  				pe44820_H.setAngle(phase_shifts[7]);
-	  				pe4312_A.setLevel(30);
-	  				pe4312_B.setLevel(30);
-	  				pe4312_C.setLevel(30);
-	  				pe4312_D.setLevel(30);
-	  				pe4312_E.setLevel(30);
-	  				pe4312_F.setLevel(30);
-	  				pe4312_G.setLevel(30);
-	  				pe4312_H.setLevel(30);
-	  			  }
-
-	  		  }
-	  		  else if(!strcmp(cmd, "ANT_DIS")){
-	  			  float value = strtof(arg, NULL);
-	  			  antenna_distance = value;
-	  			strncpy(serial_output, "Antenna distance set to ", 25);
-	  			strncat(serial_output, arg, 5);
-	  			strncat(serial_output, " meter \n\r", 11);
-	  		  }
-	  		  else{
-	  			  strncpy(serial_output, "Unknown Command\n\r", 20);
-	  		  }
-
-	  		  HAL_UART_Transmit(&huart3, (const uint8_t*)serial_output, sizeof(serial_output), 10);
-	  		  memset (serial_output, '\0', 100);
-	  		  memset (input, '\0', 100);
-	  	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -503,7 +312,7 @@ static void MX_USB_OTG_FS_PCD_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
-GPIO_InitTypeDef GPIO_InitStruct = {0};
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
 /* USER CODE END MX_GPIO_Init_1 */
 

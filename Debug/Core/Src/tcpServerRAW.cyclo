@@ -1,10 +1,10 @@
-../Core/Src/tcpServerRAW.cpp:93:26:tcp_server_struct get_tcp_serveur_struct()	1
-../Core/Src/tcpServerRAW.cpp:104:6:void tcp_server_init()	2
-../Core/Src/tcpServerRAW.cpp:140:14:err_t tcp_server_accept(void*, tcp_pcb*, err_t)	2
-../Core/Src/tcpServerRAW.cpp:192:14:err_t tcp_server_recv(void*, tcp_pcb*, pbuf*, err_t)	10
-../Core/Src/tcpServerRAW.cpp:295:13:void tcp_server_error(void*, err_t)	2
-../Core/Src/tcpServerRAW.cpp:315:14:err_t tcp_server_poll(void*, tcp_pcb*)	4
-../Core/Src/tcpServerRAW.cpp:355:14:err_t tcp_server_sent(void*, tcp_pcb*, u16_t)	3
-../Core/Src/tcpServerRAW.cpp:386:13:void tcp_server_send(tcp_pcb*, tcp_server_struct*)	8
-../Core/Src/tcpServerRAW.cpp:446:13:void tcp_server_connection_close(tcp_pcb*, tcp_server_struct*)	2
-../Core/Src/tcpServerRAW.cpp:468:13:void tcp_server_handle(tcp_pcb*, tcp_server_struct*)	2
+../Core/Src/tcpServerRAW.cpp:81:6:void tcp_server_send_message(tcp_pcb*, const char*)	3
+../Core/Src/tcpServerRAW.cpp:115:17:tcp_pcb* tcp_server_init()	2
+../Core/Src/tcpServerRAW.cpp:152:14:err_t tcp_server_accept(void*, tcp_pcb*, err_t)	2
+../Core/Src/tcpServerRAW.cpp:206:14:err_t tcp_server_recv(void*, tcp_pcb*, pbuf*, err_t)	10
+../Core/Src/tcpServerRAW.cpp:309:13:void tcp_server_error(void*, err_t)	2
+../Core/Src/tcpServerRAW.cpp:329:14:err_t tcp_server_poll(void*, tcp_pcb*)	4
+../Core/Src/tcpServerRAW.cpp:369:14:err_t tcp_server_sent(void*, tcp_pcb*, u16_t)	3
+../Core/Src/tcpServerRAW.cpp:400:13:void tcp_server_send(tcp_pcb*, tcp_server_struct*)	8
+../Core/Src/tcpServerRAW.cpp:460:13:void tcp_server_connection_close(tcp_pcb*, tcp_server_struct*)	2
+../Core/Src/tcpServerRAW.cpp:482:6:void tcp_server_handle(tcp_pcb*, tcp_server_struct*, const char*)	2

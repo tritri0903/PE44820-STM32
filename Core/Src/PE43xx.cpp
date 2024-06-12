@@ -12,6 +12,8 @@ PE43xx::PE43xx(GPIO_TypeDef* si_port, GPIO_InitTypeDef si_pin, GPIO_TypeDef* le_
 	_si_port = si_port;
 	_le_port = le_port;
 	_clk_port = clk_port;
+
+	begin();
 }
 
 

@@ -182,6 +182,9 @@ static err_t tcp_server_accept(void *arg, struct tcp_pcb *newpcb, err_t err)
     /* initialize lwip tcp_poll callback function for newpcb */
     tcp_poll(newpcb, tcp_server_poll, 0);
 
+	const char *test_message = "TCP Connected";
+	tcp_server_send_message(server_pcb, test_message);
+
     ret_err = ERR_OK;
   }
   else
@@ -513,7 +516,7 @@ void tcp_server_handle (struct tcp_pcb *tpcb, struct tcp_server_struct *es, cons
 	esTx->p->tot_len = (es->p->tot_len - es->p->len) + strlen (buf);
 	esTx->p->len = strlen (buf);
 
-	tcp_server_send(tpcb, esTx);
+	//tcp_server_send(tpcb, esTx);
 
 	pbuf_free(es->p);
 

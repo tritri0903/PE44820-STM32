@@ -90,17 +90,13 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
 /* USER CODE BEGIN PFP */
-
+void parseString(const char *input, double *vector1, int *vector2, int size);
+void removeLeadingChars(char *str, int numCharsToRemove);
+void calculate_phase_shifts(double angle_of_attack, double wavelength, double distance, int num_antennas, double phase_shifts[]);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-// Fonction pour calculer le déphasage de chaque antenne
-void calculate_phase_shifts(double angle_of_attack, double wavelength, double distance, int num_antennas, double phase_shifts[]) {
-    for (int n = 0; n < num_antennas; n++) {
-        phase_shifts[n] = (2 * PI * distance / wavelength) * n * sin(angle_of_attack) * 57.3;
-    }
-}
 /* USER CODE END 0 */
 
 /**
@@ -235,9 +231,14 @@ int main(void)
 
   HAL_GPIO_WritePin(GPIOC, LE_Att_Pin, GPIO_PIN_RESET);
 
+  // Define the size of the vectors
+  int size = 8;
+  double vectorD[8];
+  int vectorA[8];
 
-  //struct tcp_server_struct *esTx;
-
+  // Initialize the vectors to zero
+  memset(vectorD, 0, sizeof(vectorD));
+  memset(vectorA, 0, sizeof(vectorA));
 
   /* USER CODE END 2 */
 
@@ -253,27 +254,23 @@ int main(void)
 	  		  option = strtok(NULL, " ");
 
 	  		  if(!strcmp(cmd, "BEAM")){
-	  			  const char *test_message = "Hello, this is a test message!";
-	  			  tcp_server_send_message(server_pcb, test_message);
+	  			  // Commande pour orienter le faisceau dans un angle spécifique
 	  			  strncpy(serial_output, "Command Received\n\r", 21);
 	  			  int value = strtol(arg, NULL, 10);
 	  			  if(value){
 					// Convertir l'angle d'attaque en radians
 					angle_of_attack = value * PI / 180.0;
 
-					// Tableau pour stocker les déphasages
-					double phase_shifts[8];
-
 					// Calculer les déphasages
-					calculate_phase_shifts(angle_of_attack, 0.03, antenna_distance, 8, phase_shifts);
-					pe44820_A.setAngle(phase_shifts[0]);
-					pe44820_B.setAngle(phase_shifts[1]);
-	  				pe44820_C.setAngle(phase_shifts[2]);
-	  				pe44820_D.setAngle(phase_shifts[3]);
-	  				pe44820_E.setAngle(phase_shifts[4]);
-	  				pe44820_F.setAngle(phase_shifts[5]);
-	  				pe44820_G.setAngle(phase_shifts[6]);
-	  				pe44820_H.setAngle(phase_shifts[7]);
+					calculate_phase_shifts(angle_of_attack, 0.03, antenna_distance, 8, vectorD);
+					pe44820_A.setAngle(vectorD[0]);
+					pe44820_B.setAngle(vectorD[1]);
+	  				pe44820_C.setAngle(vectorD[2]);
+	  				pe44820_D.setAngle(vectorD[3]);
+	  				pe44820_E.setAngle(vectorD[4]);
+	  				pe44820_F.setAngle(vectorD[5]);
+	  				pe44820_G.setAngle(vectorD[6]);
+	  				pe44820_H.setAngle(vectorD[7]);
 	  				pe4312_A.setLevel(30);
 	  				pe4312_B.setLevel(30);
 	  				pe4312_C.setLevel(30);
@@ -282,18 +279,59 @@ int main(void)
 	  				pe4312_F.setLevel(30);
 	  				pe4312_G.setLevel(30);
 	  				pe4312_H.setLevel(30);
+
+	  				// Réponse TCP
+		  			const char *test_message = "BEAM Command Received";
+		  			tcp_server_send_message(server_pcb, test_message);
 	  			  }
 
 	  		  }
-	  		  else if(!strcmp(cmd, "ANT_DIS")){
+	  		  else if(!strcmp(cmd, "DISTANCE")){
+	  			  // Défini la valeur entre les antennes pour calculer le déphasage
 	  			  float value = strtof(arg, NULL);
 	  			  antenna_distance = value;
-	  			strncpy(serial_output, "Antenna distance set to ", 25);
-	  			strncat(serial_output, arg, 5);
-	  			strncat(serial_output, " meter \n\r", 11);
+
+	  			  // Réponse TCP
+	  			  const char *test_message = "Antenna distance set ";
+	  			  tcp_server_send_message(server_pcb, test_message);
+
+	  			  // Serial
+	  			  strncpy(serial_output, "Antenna distance set to ", 25);
+	  			  strncat(serial_output, arg, 5);
+	  			  strncat(serial_output, " meter \n\r", 11);
+	  		  }
+	  		  else if(!strcmp(cmd, "MANUEL")){
+	  			  // Permet de contôler la valeur de déphasage et d'atténuation de chaque puces
+	  			  removeLeadingChars(input, sizeof("MANUAL"));
+	  			  parseString(input, vectorD, vectorA, size);
+					pe44820_A.setAngle(vectorD[0]);
+					pe44820_B.setAngle(vectorD[1]);
+	  				pe44820_C.setAngle(vectorD[2]);
+	  				pe44820_D.setAngle(vectorD[3]);
+	  				pe44820_E.setAngle(vectorD[4]);
+	  				pe44820_F.setAngle(vectorD[5]);
+	  				pe44820_G.setAngle(vectorD[6]);
+	  				pe44820_H.setAngle(vectorD[7]);
+	  				pe4312_A.setLevel(vectorA[0]);
+	  				pe4312_B.setLevel(vectorA[1]);
+	  				pe4312_C.setLevel(vectorA[2]);
+	  				pe4312_D.setLevel(vectorA[3]);
+	  				pe4312_E.setLevel(vectorA[4]);
+	  				pe4312_F.setLevel(vectorA[5]);
+	  				pe4312_G.setLevel(vectorA[6]);
+	  				pe4312_H.setLevel(vectorA[7]);
+
+	  				// Réponse TCP
+		  			const char *test_message = "All values are set ";
+		  			tcp_server_send_message(server_pcb, test_message);
 	  		  }
 	  		  else{
+	  			  // Commande unconnue
 	  			  strncpy(serial_output, "Unknown Command\n\r", 20);
+
+	  			  // Réponse TCP
+	  			  const char *test_message = "Unknown command Received";
+	  			  tcp_server_send_message(server_pcb, test_message);
 	  		  }
 
 	  		  HAL_UART_Transmit(&huart3, (const uint8_t*)serial_output, sizeof(serial_output), 10);
@@ -595,6 +633,61 @@ GPIO_InitTypeDef GPIO_InitStruct = {0};
 
 /* USER CODE BEGIN 4 */
 
+// Fonction pour calculer le déphasage de chaque antenne
+void calculate_phase_shifts(double angle_of_attack, double wavelength, double distance, int num_antennas, double phase_shifts[]) {
+    for (int n = 0; n < num_antennas; n++) {
+        phase_shifts[n] = (2 * PI * distance / wavelength) * n * sin(angle_of_attack) * 57.3;
+    }
+}
+
+void removeLeadingChars(char *str, int numCharsToRemove) {
+    for (int i = 0; i < numCharsToRemove; i++){
+    	str[i] = '\0';
+    }
+}
+
+// Function to parse the input string and store values into two arrays
+void parseString(const char *input, double *vector1, int *vector2, int size) {
+    const char *p = input;
+    int index1 = 0, index2 = 0;
+    int isVector1 = 1; // Start with the first vector
+    char temp[4]; // Assuming single-digit integers with possible '\0' padding
+
+    while (*p != 'S') {
+        // Move to the start of the first vector
+        if (*p == '[') {
+            p++;
+            while (*p != ']') {
+                if (*p >= '0' && *p <= '9') {
+                    // Find the length of the current number
+                    int len = 0;
+                    while (p[len] >= '0' && p[len] <= '9' && len < 3) {
+                        temp[len] = p[len];
+                        len++;
+                    }
+                    temp[len] = '\0'; // Null-terminate the number string
+
+                    // Convert to integer and store in the appropriate vector
+                    if (isVector1 && index1 < size) {
+                        vector1[index1++] = atoi(temp);
+                    } else if (!isVector1 && index2 < size) {
+                        vector2[index2++] = atoi(temp);
+                    }
+                    p += len; // Move the pointer to the end of the current number
+                } else {
+                    p++;
+                }
+            }
+        }
+        if (*p == ']') {
+            // Move to the start of the second vector
+            if (isVector1) {
+                isVector1 = 0; // Switch to the second vector
+            }
+        }
+        p++;
+    }
+}
 /* USER CODE END 4 */
 
 /**

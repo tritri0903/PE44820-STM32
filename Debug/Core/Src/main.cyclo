@@ -1,9 +1,11 @@
-../Core/Src/main.cpp:99:6:void calculate_phase_shifts(double, double, double, int, double*)	2
-../Core/Src/main.cpp:110:5:int main()	5
-../Core/Src/main.cpp:314:6:void SystemClock_Config()	3
-../Core/Src/main.cpp:360:13:void MX_SPI1_Init()	2
-../Core/Src/main.cpp:398:13:void MX_SPI2_Init()	2
-../Core/Src/main.cpp:436:13:void MX_USART3_UART_Init()	2
-../Core/Src/main.cpp:469:13:void MX_USB_OTG_FS_PCD_Init()	2
-../Core/Src/main.cpp:504:13:void MX_GPIO_Init()	1
-../Core/Src/main.cpp:604:6:void Error_Handler()	1
+../Core/Src/main.cpp:106:5:int main()	6
+../Core/Src/main.cpp:352:6:void SystemClock_Config()	3
+../Core/Src/main.cpp:398:13:void MX_SPI1_Init()	2
+../Core/Src/main.cpp:436:13:void MX_SPI2_Init()	2
+../Core/Src/main.cpp:474:13:void MX_USART3_UART_Init()	2
+../Core/Src/main.cpp:507:13:void MX_USB_OTG_FS_PCD_Init()	2
+../Core/Src/main.cpp:542:13:void MX_GPIO_Init()	1
+../Core/Src/main.cpp:637:6:void calculate_phase_shifts(double, double, double, int, double*)	2
+../Core/Src/main.cpp:643:6:void removeLeadingChars(char*, int)	2
+../Core/Src/main.cpp:650:6:void parseString(const char*, double*, int*, int)	15
+../Core/Src/main.cpp:697:6:void Error_Handler()	1

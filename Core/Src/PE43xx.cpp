@@ -108,44 +108,24 @@ void PE43xx::_writeLevel() {
     int intlevel = int(_level);
     // default to 6 bits
     int bits = 6;
-
-    // if our step is less than 1 the chip supports the 0.5 decimal
-    /*
-    if(_step < 1) {
-        // one more bit
-        bits = 6;
-
-        // if the decimal is not 0 shift 1 into our level
-        if( (_level*10 - intlevel*10) > 0) {
-            intlevel = intlevel << 1;
-            bitWrite(intlevel, 0, 1);
-        } else {
-            intlevel = intlevel << 1;
-            bitWrite(intlevel, 0, 0);
-        }
-    }*/
-
-    // LE and CLOCK down to get the chip listen
-    HAL_GPIO_WritePin(_le_port, _le_pin.Pin, GPIO_PIN_RESET);
-    HAL_Delay(3);
-
     // Write the level out MSB first
     int b;
     for (int bit = bits; bit >= 0; bit--) {
         b = ((intlevel << 1) >> bit) & 0x01;
-
-        HAL_GPIO_WritePin(_clk_port, _clk_pin.Pin, GPIO_PIN_SET);
         HAL_GPIO_WritePin(_si_port, _si_pin.Pin, (b != 0) ? GPIO_PIN_SET : GPIO_PIN_RESET);
-
         HAL_Delay(1);
+        HAL_GPIO_WritePin(_clk_port, _clk_pin.Pin, GPIO_PIN_SET);
+        HAL_Delay(3);
 
         HAL_GPIO_WritePin(_clk_port, _clk_pin.Pin, GPIO_PIN_RESET);
 
-        HAL_Delay(1);
+        HAL_Delay(3);
     }
 
     // toggle LE to latch
     HAL_GPIO_WritePin(_le_port, _le_pin.Pin, GPIO_PIN_SET);
+    HAL_Delay(1);
+    HAL_GPIO_WritePin(_le_port, _le_pin.Pin, GPIO_PIN_RESET);
 }
 
 // getters

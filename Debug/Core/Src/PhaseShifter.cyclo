@@ -1,14 +1,13 @@
-../Core/Inc/PhaseShifter.h:55:15:void PhaseShifter::_PS_delay_100ns(uint32_t)	1
 ../Core/Src/PhaseShifter.cpp:17:1:PhaseShifter::PhaseShifter(GPIO_TypeDef*, GPIO_InitTypeDef, GPIO_TypeDef*, GPIO_InitTypeDef, GPIO_TypeDef*, GPIO_InitTypeDef, uint8_t, mode_e)	1
 ../Core/Src/PhaseShifter.cpp:34:6:void PhaseShifter::begin()	1
 ../Core/Src/PhaseShifter.cpp:47:6:void PhaseShifter::dataShiftOut(uint8_t, data_u)	3
-../Core/Src/PhaseShifter.cpp:93:10:uint16_t PhaseShifter::findAngle(float, mode_e, float*)	11
-../Core/Src/PhaseShifter.cpp:141:7:float PhaseShifter::setAngle(float)	3
-../Core/Src/PhaseShifter.cpp:158:6:void PhaseShifter::setData(data_u)	1
-../Core/Src/PhaseShifter.cpp:163:8:data_u PhaseShifter::getData()	1
-../Core/Src/PhaseShifter.cpp:168:6:void PhaseShifter::setAddress(uint8_t)	1
-../Core/Src/PhaseShifter.cpp:173:9:uint8_t PhaseShifter::getAddress()	1
-../Core/Src/PhaseShifter.cpp:178:6:void PhaseShifter::setMode(mode_e)	4
-../Core/Src/PhaseShifter.cpp:188:8:mode_e PhaseShifter::getMode()	1
-../Core/Src/PhaseShifter.cpp:193:6:void PhaseShifter::setPins(GPIO_InitTypeDef, GPIO_InitTypeDef, GPIO_InitTypeDef)	1
-../Core/Src/PhaseShifter.cpp:200:6:void PhaseShifter::getPins(GPIO_InitTypeDef*, GPIO_InitTypeDef*, GPIO_InitTypeDef*)	4
+../Core/Src/PhaseShifter.cpp:95:10:uint16_t PhaseShifter::findAngle(float, mode_e, float*)	11
+../Core/Src/PhaseShifter.cpp:143:7:float PhaseShifter::setAngle(float)	3
+../Core/Src/PhaseShifter.cpp:162:6:void PhaseShifter::setData(data_u)	1
+../Core/Src/PhaseShifter.cpp:167:8:data_u PhaseShifter::getData()	1
+../Core/Src/PhaseShifter.cpp:172:6:void PhaseShifter::setAddress(uint8_t)	1
+../Core/Src/PhaseShifter.cpp:177:9:uint8_t PhaseShifter::getAddress()	1
+../Core/Src/PhaseShifter.cpp:182:6:void PhaseShifter::setMode(mode_e)	4
+../Core/Src/PhaseShifter.cpp:192:8:mode_e PhaseShifter::getMode()	1
+../Core/Src/PhaseShifter.cpp:197:6:void PhaseShifter::setPins(GPIO_InitTypeDef, GPIO_InitTypeDef, GPIO_InitTypeDef)	1
+../Core/Src/PhaseShifter.cpp:204:6:void PhaseShifter::getPins(GPIO_InitTypeDef*, GPIO_InitTypeDef*, GPIO_InitTypeDef*)	4

@@ -7,4 +7,4 @@
 ../Core/Src/tcpServerRAW.cpp:372:14:err_t tcp_server_sent(void*, tcp_pcb*, u16_t)	24	static
 ../Core/Src/tcpServerRAW.cpp:403:13:void tcp_server_send(tcp_pcb*, tcp_server_struct*)	32	static
 ../Core/Src/tcpServerRAW.cpp:463:13:void tcp_server_connection_close(tcp_pcb*, tcp_server_struct*)	16	static
-../Core/Src/tcpServerRAW.cpp:485:6:void tcp_server_handle(tcp_pcb*, tcp_server_struct*, const char*)	152	static
+../Core/Src/tcpServerRAW.cpp:485:6:void tcp_server_handle(tcp_pcb*, tcp_server_struct*, const char*)	248	static

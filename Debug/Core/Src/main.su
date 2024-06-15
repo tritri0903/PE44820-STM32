@@ -1,11 +1,11 @@
-../Core/Src/main.cpp:106:5:int main()	1912	static
-../Core/Src/main.cpp:352:6:void SystemClock_Config()	88	static
-../Core/Src/main.cpp:398:13:void MX_SPI1_Init()	8	static
-../Core/Src/main.cpp:436:13:void MX_SPI2_Init()	8	static
-../Core/Src/main.cpp:474:13:void MX_USART3_UART_Init()	8	static
-../Core/Src/main.cpp:507:13:void MX_USB_OTG_FS_PCD_Init()	8	static
-../Core/Src/main.cpp:542:13:void MX_GPIO_Init()	64	static
-../Core/Src/main.cpp:637:6:void calculate_phase_shifts(double, double, double, int, double*)	56	static
-../Core/Src/main.cpp:643:6:void removeLeadingChars(char*, int)	24	static
-../Core/Src/main.cpp:650:6:void parseString(const char*, double*, int*, int)	56	static
-../Core/Src/main.cpp:697:6:void Error_Handler()	4	static,ignoring_inline_asm
+../Core/Src/main.cpp:106:5:int main()	1888	static
+../Core/Src/main.cpp:360:6:void SystemClock_Config()	88	static
+../Core/Src/main.cpp:406:13:void MX_SPI1_Init()	8	static
+../Core/Src/main.cpp:444:13:void MX_SPI2_Init()	8	static
+../Core/Src/main.cpp:482:13:void MX_USART3_UART_Init()	8	static
+../Core/Src/main.cpp:515:13:void MX_USB_OTG_FS_PCD_Init()	8	static
+../Core/Src/main.cpp:550:13:void MX_GPIO_Init()	64	static
+../Core/Src/main.cpp:648:6:void calculate_phase_shifts(double, double, double, int, double*)	56	static
+../Core/Src/main.cpp:654:6:void removeLeadingChars(char*, int)	24	static
+../Core/Src/main.cpp:661:6:void parseString(const char*, double*, int*, int)	56	static
+../Core/Src/main.cpp:708:6:void Error_Handler()	4	static,ignoring_inline_asm

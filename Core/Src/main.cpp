@@ -39,23 +39,23 @@
 /* USER CODE BEGIN PD */
 #define PI 3.141592653589793
 
-#define LE_ATT_PIN_A 8
-#define LE_ATT_PIN_B 8
-#define LE_ATT_PIN_C 9
-#define LE_ATT_PIN_D 12
-#define LE_ATT_PIN_E 8
-#define LE_ATT_PIN_F 14
-#define LE_ATT_PIN_G 11
-#define LE_ATT_PIN_H 1
-
-#define LE_ATT_PORT_A GPIOC
-#define LE_ATT_PORT_B GPIOB
-#define LE_ATT_PORT_C GPIOB
-#define LE_ATT_PORT_D GPIOF
-#define LE_ATT_PORT_E GPIOE
-#define LE_ATT_PORT_F GPIOE
-#define LE_ATT_PORT_G GPIOB
-#define LE_ATT_PORT_H GPIOG
+//#define LE_ATT_PIN_A 8
+//#define LE_ATT_PIN_B 8
+//#define LE_ATT_PIN_C 9
+//#define LE_ATT_PIN_D 12
+//#define LE_ATT_PIN_E 8
+//#define LE_ATT_PIN_F 14
+//#define LE_ATT_PIN_G 11
+//#define LE_ATT_PIN_H 1
+//
+//#define LE_ATT_PORT_A GPIOC
+//#define LE_ATT_PORT_B GPIOB
+//#define LE_ATT_PORT_C GPIOB
+//#define LE_ATT_PORT_D GPIOF
+//#define LE_ATT_PORT_E GPIOE
+//#define LE_ATT_PORT_F GPIOE
+//#define LE_ATT_PORT_G GPIOB
+//#define LE_ATT_PORT_H GPIOG
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -117,71 +117,70 @@ int main(void)
   /* USER CODE BEGIN Init */
 
   GPIO_InitTypeDef GPIO_InitStruct_Si = {
-		  .Pin = SI_Pin,
+		  .Pin = SI_Pin_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
   GPIO_InitTypeDef GPIO_InitStruct_Le = {
-		  .Pin = LE_Pin,
+		  .Pin = LE_Pin_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
   GPIO_InitTypeDef GPIO_InitStruct_Clk = {
-		  .Pin = CLK_Pin,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Si_Att = {
-		  .Pin = SDI_Att_Pin,
-		  .Mode = GPIO_MODE_IT_FALLING,
-		  .Pull = GPIO_NOPULL
-  };
-  GPIO_InitTypeDef GPIO_InitStruct_Clk_Att = {
-		  .Pin = CLK_Att_Pin,
+		  .Pin = CLK_Pin_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
   GPIO_InitTypeDef GPIO_InitStruct_Le_Att_A = {
-		  .Pin = LE_ATT_PIN_A,
+		  .Pin = LE_ATT_PIN_A_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
   GPIO_InitTypeDef GPIO_InitStruct_Le_Att_B = {
-		  .Pin = LE_ATT_PIN_B,
+		  .Pin = LE_ATT_PIN_B_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
   GPIO_InitTypeDef GPIO_InitStruct_Le_Att_C = {
-		  .Pin = LE_ATT_PIN_C,
+		  .Pin = LE_ATT_PIN_C_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
   GPIO_InitTypeDef GPIO_InitStruct_Le_Att_D = {
-		  .Pin = LE_ATT_PIN_D,
+		  .Pin = LE_ATT_PIN_D_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
   GPIO_InitTypeDef GPIO_InitStruct_Le_Att_E = {
-		  .Pin = LE_ATT_PIN_E,
+		  .Pin = LE_ATT_PIN_E_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
   GPIO_InitTypeDef GPIO_InitStruct_Le_Att_F = {
-		  .Pin = LE_ATT_PIN_F,
+		  .Pin = LE_ATT_PIN_F_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
   GPIO_InitTypeDef GPIO_InitStruct_Le_Att_G = {
-		  .Pin = LE_ATT_PIN_G,
+		  .Pin = LE_ATT_PIN_G_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
   GPIO_InitTypeDef GPIO_InitStruct_Le_Att_H = {
-		  .Pin = LE_ATT_PIN_H,
+		  .Pin = LE_ATT_PIN_H_Pin,
 		  .Mode = GPIO_MODE_IT_FALLING,
 		  .Pull = GPIO_NOPULL
   };
 
+//  HAL_GPIO_Init(SI_Pin_GPIO_Port, &GPIO_InitStruct_Si);
+//  HAL_GPIO_Init(LE_ATT_PORT_A, &GPIO_InitStruct_Le_Att_A);
+//  HAL_GPIO_Init(LE_ATT_PORT_B, &GPIO_InitStruct_Le_Att_B);
+//  HAL_GPIO_Init(LE_ATT_PORT_C, &GPIO_InitStruct_Le_Att_C);
+//  HAL_GPIO_Init(LE_ATT_PORT_D, &GPIO_InitStruct_Le_Att_D);
+//  HAL_GPIO_Init(LE_ATT_PORT_E, &GPIO_InitStruct_Le_Att_E);
+//  HAL_GPIO_Init(LE_ATT_PORT_F, &GPIO_InitStruct_Le_Att_F);
+//  HAL_GPIO_Init(LE_ATT_PORT_G, &GPIO_InitStruct_Le_Att_G);
+//  HAL_GPIO_Init(LE_ATT_PORT_H, &GPIO_InitStruct_Le_Att_H);
 
   /* USER CODE END Init */
 
@@ -208,33 +207,40 @@ int main(void)
   char *cmd, *arg, *option;
   char serial_output[100] = "";
 
-  antenna_distance = 0.05;
+  antenna_distance = 0.025;
 
-  PhaseShifter pe44820_A = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_B = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x001, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_C = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x002, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_D = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x003, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_E = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x004, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_F = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x005, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_G = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x006, MODE_BINARY_WEIGHTED);
-  PhaseShifter pe44820_H = PhaseShifter(SI_GPIO_Port, GPIO_InitStruct_Si, LE_GPIO_Port, GPIO_InitStruct_Le, CLK_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x007, MODE_BINARY_WEIGHTED);
+  PhaseShifter pe44820_A = PhaseShifter(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_Pin_GPIO_Port, GPIO_InitStruct_Le, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, MODE_OPT_2600);
+  PhaseShifter pe44820_B = PhaseShifter(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_Pin_GPIO_Port, GPIO_InitStruct_Le, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x001, MODE_OPT_2600);
+  PhaseShifter pe44820_C = PhaseShifter(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_Pin_GPIO_Port, GPIO_InitStruct_Le, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x002, MODE_OPT_2600);
+  PhaseShifter pe44820_D = PhaseShifter(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_Pin_GPIO_Port, GPIO_InitStruct_Le, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x003, MODE_OPT_2600);
+  PhaseShifter pe44820_E = PhaseShifter(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_Pin_GPIO_Port, GPIO_InitStruct_Le, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x004, MODE_OPT_2600);
+  PhaseShifter pe44820_F = PhaseShifter(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_Pin_GPIO_Port, GPIO_InitStruct_Le, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x005, MODE_OPT_2600);
+  PhaseShifter pe44820_G = PhaseShifter(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_Pin_GPIO_Port, GPIO_InitStruct_Le, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x006, MODE_OPT_2600);
+  PhaseShifter pe44820_H = PhaseShifter(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_Pin_GPIO_Port, GPIO_InitStruct_Le, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x007, MODE_OPT_2600);
 
 
-  PE43xx pe4312_A = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_A, GPIO_InitStruct_Le_Att_A, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_B = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_B, GPIO_InitStruct_Le_Att_B, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_C = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_C, GPIO_InitStruct_Le_Att_C, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_D = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_D, GPIO_InitStruct_Le_Att_D, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_E = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_E, GPIO_InitStruct_Le_Att_E, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_F = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_F, GPIO_InitStruct_Le_Att_F, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_G = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_G, GPIO_InitStruct_Le_Att_G, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
-  PE43xx pe4312_H = PE43xx(SDI_Att_GPIO_Port, GPIO_InitStruct_Si_Att, LE_ATT_PORT_H, GPIO_InitStruct_Le_Att_H, CLK_Att_GPIO_Port, GPIO_InitStruct_Clk_Att, (uint8_t) 0x000, 0);
+  PE43xx pe4312_A = PE43xx(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_ATT_PIN_A_GPIO_Port, GPIO_InitStruct_Le_Att_A, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, 0);
+  PE43xx pe4312_B = PE43xx(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_ATT_PIN_B_GPIO_Port, GPIO_InitStruct_Le_Att_B, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, 0);
+  PE43xx pe4312_C = PE43xx(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_ATT_PIN_C_GPIO_Port, GPIO_InitStruct_Le_Att_C, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, 0);
+  PE43xx pe4312_D = PE43xx(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_ATT_PIN_D_GPIO_Port, GPIO_InitStruct_Le_Att_D, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, 0);
+  PE43xx pe4312_E = PE43xx(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_ATT_PIN_E_GPIO_Port, GPIO_InitStruct_Le_Att_E, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, 0);
+  PE43xx pe4312_F = PE43xx(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_ATT_PIN_F_GPIO_Port, GPIO_InitStruct_Le_Att_F, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, 0);
+  PE43xx pe4312_G = PE43xx(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_ATT_PIN_G_GPIO_Port, GPIO_InitStruct_Le_Att_G, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, 0);
+  PE43xx pe4312_H = PE43xx(SI_Pin_GPIO_Port, GPIO_InitStruct_Si, LE_ATT_PIN_H_GPIO_Port, GPIO_InitStruct_Le_Att_H, CLK_Pin_GPIO_Port, GPIO_InitStruct_Clk, (uint8_t) 0x000, 0);
 
-  HAL_GPIO_WritePin(GPIOC, LE_Att_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LE_Pin_GPIO_Port, LE_Pin_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LE_ATT_PIN_A_GPIO_Port, LE_ATT_PIN_A_Pin, GPIO_PIN_RESET);
+  HAL_Delay(1000);
+  HAL_GPIO_WritePin(LE_ATT_PIN_A_GPIO_Port, LE_ATT_PIN_A_Pin, GPIO_PIN_SET);
+  HAL_Delay(1000);
+  HAL_GPIO_WritePin(LE_ATT_PIN_A_GPIO_Port, LE_ATT_PIN_A_Pin, GPIO_PIN_RESET);
 
   // Define the size of the vectors
   int size = 8;
   double vectorD[8];
   int vectorA[8];
+
+  double test = 0;
 
   // Initialize the vectors to zero
   memset(vectorD, 0, sizeof(vectorD));
@@ -271,14 +277,14 @@ int main(void)
 	  				pe44820_F.setAngle(vectorD[5]);
 	  				pe44820_G.setAngle(vectorD[6]);
 	  				pe44820_H.setAngle(vectorD[7]);
-	  				pe4312_A.setLevel(30);
-	  				pe4312_B.setLevel(30);
-	  				pe4312_C.setLevel(30);
-	  				pe4312_D.setLevel(30);
-	  				pe4312_E.setLevel(30);
-	  				pe4312_F.setLevel(30);
-	  				pe4312_G.setLevel(30);
-	  				pe4312_H.setLevel(30);
+	  				pe4312_A.setLevel(vectorA[0]);
+	  				pe4312_B.setLevel(vectorA[1]);
+	  				pe4312_C.setLevel(vectorA[2]);
+	  				pe4312_D.setLevel(vectorA[3]);
+	  				pe4312_E.setLevel(vectorA[4]);
+	  				pe4312_F.setLevel(vectorA[5]);
+	  				pe4312_G.setLevel(vectorA[6]);
+	  				pe4312_H.setLevel(vectorA[7]);
 
 	  				// Réponse TCP
 		  			const char *test_message = "BEAM Command Received";
@@ -304,14 +310,7 @@ int main(void)
 	  			  // Permet de contôler la valeur de déphasage et d'atténuation de chaque puces
 	  			  removeLeadingChars(input, sizeof("MANUAL"));
 	  			  parseString(input, vectorD, vectorA, size);
-					pe44820_A.setAngle(vectorD[0]);
-					pe44820_B.setAngle(vectorD[1]);
-	  				pe44820_C.setAngle(vectorD[2]);
-	  				pe44820_D.setAngle(vectorD[3]);
-	  				pe44820_E.setAngle(vectorD[4]);
-	  				pe44820_F.setAngle(vectorD[5]);
-	  				pe44820_G.setAngle(vectorD[6]);
-	  				pe44820_H.setAngle(vectorD[7]);
+
 	  				pe4312_A.setLevel(vectorA[0]);
 	  				pe4312_B.setLevel(vectorA[1]);
 	  				pe4312_C.setLevel(vectorA[2]);
@@ -320,6 +319,15 @@ int main(void)
 	  				pe4312_F.setLevel(vectorA[5]);
 	  				pe4312_G.setLevel(vectorA[6]);
 	  				pe4312_H.setLevel(vectorA[7]);
+
+					pe44820_A.setAngle(vectorD[0]);
+					pe44820_B.setAngle(vectorD[1]);
+	  				pe44820_C.setAngle(vectorD[2]);
+	  				pe44820_D.setAngle(vectorD[3]);
+	  				pe44820_E.setAngle(vectorD[4]);
+	  				pe44820_F.setAngle(vectorD[5]);
+	  				pe44820_G.setAngle(vectorD[6]);
+	  				pe44820_H.setAngle(vectorD[7]);
 
 	  				// Réponse TCP
 		  			const char *test_message = "All values are set ";
@@ -541,91 +549,94 @@ static void MX_USB_OTG_FS_PCD_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
-GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
+	  GPIO_InitTypeDef GPIO_InitStruct = {0};
+	/* USER CODE BEGIN MX_GPIO_Init_1 */
+	/* USER CODE END MX_GPIO_Init_1 */
 
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOF_CLK_ENABLE();
-  __HAL_RCC_GPIOE_CLK_ENABLE();
-  __HAL_RCC_GPIOD_CLK_ENABLE();
-  __HAL_RCC_GPIOG_CLK_ENABLE();
+	  /* GPIO Ports Clock Enable */
+	  __HAL_RCC_GPIOC_CLK_ENABLE();
+	  __HAL_RCC_GPIOH_CLK_ENABLE();
+	  __HAL_RCC_GPIOA_CLK_ENABLE();
+	  __HAL_RCC_GPIOB_CLK_ENABLE();
+	  __HAL_RCC_GPIOF_CLK_ENABLE();
+	  __HAL_RCC_GPIOG_CLK_ENABLE();
+	  __HAL_RCC_GPIOE_CLK_ENABLE();
+	  __HAL_RCC_GPIOD_CLK_ENABLE();
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD3_Pin|LD2_Pin, GPIO_PIN_RESET);
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LE_ATT_PIN_G_Pin|LD3_Pin|LD2_Pin
+	                          |LE_ATT_PIN_B_Pin|LE_ATT_PIN_C_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LE_GPIO_Port, LE_Pin, GPIO_PIN_RESET);
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(GPIOF, LE_ATT_PIN_D_Pin|LE_Pin_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, SDI_Att_Pin|CLK_Att_Pin, GPIO_PIN_RESET);
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(GPIOG, LE_ATT_PIN_H_Pin|USB_PowerSwitchOn_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, SI_Pin|CLK_Pin, GPIO_PIN_RESET);
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(GPIOE, LE_ATT_PIN_E_Pin|SI_Pin_Pin|CLK_Pin_Pin|LE_ATT_PIN_F_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(USB_PowerSwitchOn_GPIO_Port, USB_PowerSwitchOn_Pin, GPIO_PIN_RESET);
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(GPIOD, SID14_Pin|CLKD15_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LE_Att_GPIO_Port, LE_Att_Pin, GPIO_PIN_RESET);
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(LE_ATT_PIN_A_GPIO_Port, LE_ATT_PIN_A_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : USER_Btn_Pin */
-  GPIO_InitStruct.Pin = USER_Btn_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(USER_Btn_GPIO_Port, &GPIO_InitStruct);
+	  /*Configure GPIO pin : USER_Btn_Pin */
+	  GPIO_InitStruct.Pin = USER_Btn_Pin;
+	  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  HAL_GPIO_Init(USER_Btn_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LD1_Pin LD3_Pin LD2_Pin */
-  GPIO_InitStruct.Pin = LD1_Pin|LD3_Pin|LD2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	  /*Configure GPIO pins : LD1_Pin LE_ATT_PIN_G_Pin LD3_Pin LD2_Pin
+	                           LE_ATT_PIN_B_Pin LE_ATT_PIN_C_Pin */
+	  GPIO_InitStruct.Pin = LD1_Pin|LE_ATT_PIN_G_Pin|LD3_Pin|LD2_Pin
+	                          |LE_ATT_PIN_B_Pin|LE_ATT_PIN_C_Pin;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LE_Pin */
-  GPIO_InitStruct.Pin = LE_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LE_GPIO_Port, &GPIO_InitStruct);
+	  /*Configure GPIO pins : LE_ATT_PIN_D_Pin LE_Pin_Pin */
+	  GPIO_InitStruct.Pin = LE_ATT_PIN_D_Pin|LE_Pin_Pin;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SDI_Att_Pin CLK_Att_Pin */
-  GPIO_InitStruct.Pin = SDI_Att_Pin|CLK_Att_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+	  /*Configure GPIO pins : LE_ATT_PIN_H_Pin USB_PowerSwitchOn_Pin */
+	  GPIO_InitStruct.Pin = LE_ATT_PIN_H_Pin|USB_PowerSwitchOn_Pin;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SI_Pin CLK_Pin */
-  GPIO_InitStruct.Pin = SI_Pin|CLK_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+	  /*Configure GPIO pins : LE_ATT_PIN_E_Pin SI_Pin_Pin CLK_Pin_Pin LE_ATT_PIN_F_Pin */
+	  GPIO_InitStruct.Pin = LE_ATT_PIN_E_Pin|SI_Pin_Pin|CLK_Pin_Pin|LE_ATT_PIN_F_Pin;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : USB_PowerSwitchOn_Pin */
-  GPIO_InitStruct.Pin = USB_PowerSwitchOn_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(USB_PowerSwitchOn_GPIO_Port, &GPIO_InitStruct);
+	  /*Configure GPIO pins : SID14_Pin CLKD15_Pin */
+	  GPIO_InitStruct.Pin = SID14_Pin|CLKD15_Pin;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : USB_OverCurrent_Pin */
-  GPIO_InitStruct.Pin = USB_OverCurrent_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(USB_OverCurrent_GPIO_Port, &GPIO_InitStruct);
+	  /*Configure GPIO pin : USB_OverCurrent_Pin */
+	  GPIO_InitStruct.Pin = USB_OverCurrent_Pin;
+	  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  HAL_GPIO_Init(USB_OverCurrent_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LE_Att_Pin */
-  GPIO_InitStruct.Pin = LE_Att_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LE_Att_GPIO_Port, &GPIO_InitStruct);
+	  /*Configure GPIO pin : LE_ATT_PIN_A_Pin */
+	  GPIO_InitStruct.Pin = LE_ATT_PIN_A_Pin;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(LE_ATT_PIN_A_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

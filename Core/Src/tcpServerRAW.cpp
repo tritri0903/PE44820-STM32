@@ -504,8 +504,8 @@ void tcp_server_handle (struct tcp_pcb *tpcb, struct tcp_server_struct *es, cons
 	esTx->pcb = es->pcb;
 	esTx->p = es->p;
 
-	char buf[100];
-	memset (buf, '\0', 100);
+	char buf[200];
+	memset (buf, '\0', 200);
 
 	strncpy(buf, (char *)es->p->payload, es->p->tot_len);
 	strncpy(input, buf, strlen(buf));

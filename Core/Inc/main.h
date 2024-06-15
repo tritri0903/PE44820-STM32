@@ -75,12 +75,22 @@ void Error_Handler(void);
 #define RMII_RXD1_GPIO_Port GPIOC
 #define LD1_Pin GPIO_PIN_0
 #define LD1_GPIO_Port GPIOB
-#define LE_Pin GPIO_PIN_12
-#define LE_GPIO_Port GPIOF
-#define SDI_Att_Pin GPIO_PIN_9
-#define SDI_Att_GPIO_Port GPIOE
-#define CLK_Att_Pin GPIO_PIN_11
-#define CLK_Att_GPIO_Port GPIOE
+#define LE_ATT_PIN_D_Pin GPIO_PIN_12
+#define LE_ATT_PIN_D_GPIO_Port GPIOF
+#define LE_Pin_Pin GPIO_PIN_13
+#define LE_Pin_GPIO_Port GPIOF
+#define LE_ATT_PIN_H_Pin GPIO_PIN_1
+#define LE_ATT_PIN_H_GPIO_Port GPIOG
+#define LE_ATT_PIN_E_Pin GPIO_PIN_8
+#define LE_ATT_PIN_E_GPIO_Port GPIOE
+#define SI_Pin_Pin GPIO_PIN_9
+#define SI_Pin_GPIO_Port GPIOE
+#define CLK_Pin_Pin GPIO_PIN_11
+#define CLK_Pin_GPIO_Port GPIOE
+#define LE_ATT_PIN_F_Pin GPIO_PIN_14
+#define LE_ATT_PIN_F_GPIO_Port GPIOE
+#define LE_ATT_PIN_G_Pin GPIO_PIN_11
+#define LE_ATT_PIN_G_GPIO_Port GPIOB
 #define RMII_TXD1_Pin GPIO_PIN_13
 #define RMII_TXD1_GPIO_Port GPIOB
 #define LD3_Pin GPIO_PIN_14
@@ -89,16 +99,16 @@ void Error_Handler(void);
 #define STLK_RX_GPIO_Port GPIOD
 #define STLK_TX_Pin GPIO_PIN_9
 #define STLK_TX_GPIO_Port GPIOD
-#define SI_Pin GPIO_PIN_14
-#define SI_GPIO_Port GPIOD
-#define CLK_Pin GPIO_PIN_15
-#define CLK_GPIO_Port GPIOD
+#define SID14_Pin GPIO_PIN_14
+#define SID14_GPIO_Port GPIOD
+#define CLKD15_Pin GPIO_PIN_15
+#define CLKD15_GPIO_Port GPIOD
 #define USB_PowerSwitchOn_Pin GPIO_PIN_6
 #define USB_PowerSwitchOn_GPIO_Port GPIOG
 #define USB_OverCurrent_Pin GPIO_PIN_7
 #define USB_OverCurrent_GPIO_Port GPIOG
-#define LE_Att_Pin GPIO_PIN_8
-#define LE_Att_GPIO_Port GPIOC
+#define LE_ATT_PIN_A_Pin GPIO_PIN_8
+#define LE_ATT_PIN_A_GPIO_Port GPIOC
 #define USB_SOF_Pin GPIO_PIN_8
 #define USB_SOF_GPIO_Port GPIOA
 #define USB_VBUS_Pin GPIO_PIN_9
@@ -119,6 +129,10 @@ void Error_Handler(void);
 #define RMII_TXD0_GPIO_Port GPIOG
 #define LD2_Pin GPIO_PIN_7
 #define LD2_GPIO_Port GPIOB
+#define LE_ATT_PIN_B_Pin GPIO_PIN_8
+#define LE_ATT_PIN_B_GPIO_Port GPIOB
+#define LE_ATT_PIN_C_Pin GPIO_PIN_9
+#define LE_ATT_PIN_C_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

@@ -38,7 +38,7 @@ void PhaseShifter::begin(void)
 	HAL_GPIO_WritePin(this->_si_port, this->_si_pin.Pin, GPIO_PIN_RESET);
 
 	//HAL_GPIO_Init(this->_le_port, this->_le_pin);
-	HAL_GPIO_WritePin(this->_le_port, this->_le_pin.Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(this->_le_port, this->_le_pin.Pin, GPIO_PIN_SET);
 
 	//HAL_GPIO_Init(this->_clk_port,this->_clk_pin);
 	HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_SET);
@@ -49,44 +49,46 @@ void PhaseShifter::dataShiftOut(uint8_t addr, data_u data)
   int8_t bit_index;
 
   HAL_GPIO_WritePin(this->_le_port, this->_le_pin.Pin, GPIO_PIN_RESET);
-  _PS_delay_100ns(1); // Tsettle > 10ns
+  HAL_Delay(1); // Tsettle > 10ns
 
   // Data
   for (bit_index = 0; bit_index < 8; bit_index++)
   {
-	  HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_SET);
 	  HAL_GPIO_WritePin(this->_si_port, this->_si_pin.Pin,(((data.data.data >> bit_index) & 0x01) != 0) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+	  HAL_Delay(1);
+	  HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_SET);
 
-    _PS_delay_100ns(3); // Tclkh > 30ns
+    HAL_Delay(3); // Tclkh > 30ns
 
 	HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_RESET);
-    _PS_delay_100ns(3); // Tclkl > 30ns
+    HAL_Delay(3); // Tclkl > 30ns
   }
 
   // OPT
-  HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(this->_si_port, this->_si_pin.Pin, (data.data.opt != 0) ? GPIO_PIN_SET : GPIO_PIN_RESET);
-  _PS_delay_100ns(3); // Tclkh > 30ns
+  HAL_Delay(1);
+  HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_SET);
+  HAL_Delay(3); // Tclkh > 30ns
 
   HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_RESET);
-  _PS_delay_100ns(3); // Tclkl > 30ns
+  HAL_Delay(3); // Tclkl > 30ns
 
   // Address
   for (bit_index = 0; bit_index < 4; bit_index++)
   {
-	  HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_SET);
 	  HAL_GPIO_WritePin(this->_si_port, this->_si_pin.Pin, (((addr >> bit_index) & 0x01) != 0) ? GPIO_PIN_SET : GPIO_PIN_RESET);
-    _PS_delay_100ns(3); // Tclkh > 30ns
+	  HAL_Delay(1);
+	  HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_SET);
+    HAL_Delay(3); // Tclkh > 30ns
 
     HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_RESET);
-    _PS_delay_100ns(3); // Tclkl > 30ns
+    HAL_Delay(3); // Tclkl > 30ns
   }
 
   // Reset SI & SLK Pin
   HAL_GPIO_WritePin(this->_si_port, this->_si_pin.Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(this->_clk_port, this->_clk_pin.Pin, GPIO_PIN_SET);
 
-  _PS_delay_100ns(1); // Tsettle > 10ns
+  HAL_Delay(1); // Tsettle > 10ns
   HAL_GPIO_WritePin(this->_le_port, this->_le_pin.Pin, GPIO_PIN_SET);
 }
 
@@ -151,6 +153,8 @@ float PhaseShifter::setAngle(float angle)
 
   this->_data.raw = findAngle(angle, this->_mode, &foundAngle);
   this->dataShiftOut(this->_address, this->_data);
+
+  HAL_Delay(500);
 
   return foundAngle;
 }
